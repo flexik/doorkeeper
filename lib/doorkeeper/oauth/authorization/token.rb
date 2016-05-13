@@ -43,8 +43,13 @@ module Doorkeeper
                          else
                            pre_auth_or_oauth_client
                          end
+          pre_auth = if pre_auth_or_oauth_client.respond_to?(:client)
+                       pre_auth_or_oauth_client
+                     else
+                       nil
+                     end
 
-          server.custom_access_token_expires_in.call(oauth_client)
+          server.custom_access_token_expires_in.call(oauth_client, pre_auth)
         end
 
         def configuration
